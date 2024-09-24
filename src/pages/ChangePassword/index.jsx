@@ -9,8 +9,8 @@ const ChangePasswordPage = () => {
 
   return (
     <>
-      <main className="h-full">
-        <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
+      <main>
+        <div className="flex flex-1 flex-col justify-center px-6 py-12 lg:px-8">
           <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
             <p className="mb-4 text-center text-3xl font-bold">
               Change Password
