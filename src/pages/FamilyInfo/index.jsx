@@ -1,7 +1,9 @@
 const FamilyInformationPage = () => {
   return (
     <>
-      <div className="grid h-screen place-items-center"></div>
+      <div>
+        <h1>Family Information Page</h1>
+      </div>
     </>
   );
 };
