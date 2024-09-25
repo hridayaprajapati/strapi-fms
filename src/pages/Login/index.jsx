@@ -1,23 +1,53 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 
 const LoginPage = () => {
+  const [message, setMessage] = useState(null);
+
+  const login = async (event) => {
+    event.preventDefault();
+    setMessage(null);
+    const formData = new FormData(event.target);
+    const jsonData = Object.fromEntries(formData);
+
+    const reqOptions = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(jsonData),
+    };
+
+    const req = await fetch("http://127.0.0.1:1337/api/auth/local", reqOptions);
+    const res = await req.json();
+
+    if (res.error) {
+      setMessage(res.error.message);
+      return;
+    }
+
+    if (res.jwt && res.user) {
+      setMessage("Login successfull.");
+    }
+  };
+
   return (
     <>
       <main className="h-full">
         <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
           <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-            <form action="#" method="POST" className="space-y-6">
+            <form onSubmit={login} className="space-y-6">
               <div>
                 <label
-                  htmlFor="email"
+                  htmlFor="identifier"
                   className="block text-sm font-medium leading-6 text-gray-900"
                 >
                   Email address
                 </label>
                 <div className="mt-2">
                   <input
-                    id="email"
-                    name="email"
+                    id="identifier"
+                    name="identifier"
                     type="email"
                     required
                     autoComplete="email"
@@ -63,6 +93,7 @@ const LoginPage = () => {
                   Log in
                 </button>
               </div>
+              <div>{message}</div>
             </form>
 
             <p className="mt-10 text-center text-sm text-gray-500">

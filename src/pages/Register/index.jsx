@@ -1,12 +1,50 @@
-import { Link } from "react-router-dom";
+"use client";
+
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 const RegisterPage = () => {
+  const [message, setMessage] = useState(null);
+
+  const navigate = useNavigate();
+
+  const register = async (event) => {
+    event.preventDefault();
+    setMessage(null);
+
+    const formData = new FormData(event.target);
+    const jsonData = Object.fromEntries(formData);
+
+    const reqOptions = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(jsonData),
+    };
+
+    const req = await fetch(
+      "http://127.0.0.1:1337/api/auth/local/register",
+      reqOptions,
+    );
+    const res = await req.json();
+
+    if (res.error) {
+      setMessage(res.error.message);
+      return;
+    }
+
+    if (res.jwt && res.user) {
+      setMessage("Successfull registration.");
+      return navigate("/login");
+    }
+  };
   return (
     <>
       <main className="h-full">
         <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
           <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-            <form action="#" method="POST" className="space-y-6">
+            <form onSubmit={register} className="space-y-6">
               <div>
                 <label
                   htmlFor="username"
@@ -59,7 +97,6 @@ const RegisterPage = () => {
                     name="password"
                     type="password"
                     required
-                    autoComplete="current-password"
                     className="block w-full rounded-md border-0 px-1.5 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"
                   />
                 </div>
@@ -73,6 +110,7 @@ const RegisterPage = () => {
                   Register
                 </button>
               </div>
+              <div>{message}</div>
             </form>
 
             <p className="mt-10 text-center text-sm text-gray-500">
