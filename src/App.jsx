@@ -1,6 +1,8 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { useEffect, useState } from "react";
 
+import { Toaster } from "sonner";
+
 import "./App.css";
 
 import LoginPage from "./pages/Login";
@@ -32,6 +34,7 @@ function App() {
   return (
     <>
       <div className="flex h-screen flex-col sm:flex-row">
+        <Toaster expand={true} richColors position="top-center" />
         <BrowserRouter>
           <Sidebar />
           <div className="flex-1">

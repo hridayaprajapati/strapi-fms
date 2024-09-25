@@ -1,12 +1,10 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 const LoginPage = () => {
-  const [message, setMessage] = useState(null);
-
+  const navigate = useNavigate();
   const login = async (event) => {
     event.preventDefault();
-    setMessage(null);
     const formData = new FormData(event.target);
     const jsonData = Object.fromEntries(formData);
 
@@ -22,12 +20,13 @@ const LoginPage = () => {
     const res = await req.json();
 
     if (res.error) {
-      setMessage(res.error.message);
+      toast.error("Invalid credentials");
       return;
     }
 
     if (res.jwt && res.user) {
-      setMessage("Login successfull.");
+      toast.success("Login successful");
+      return navigate("/dashboard");
     }
   };
 
@@ -93,7 +92,6 @@ const LoginPage = () => {
                   Log in
                 </button>
               </div>
-              <div>{message}</div>
             </form>
 
             <p className="mt-10 text-center text-sm text-gray-500">
