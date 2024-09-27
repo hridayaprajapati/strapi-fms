@@ -1,38 +1,36 @@
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import axios from "axios";
-import { storeUser } from "../../helpers";
+import { useAuth } from "../../hooks/AuthProvider";
 import { useState } from "react";
 
-const initialUser = { password: "", identifier: "" };
-
 const LoginPage = () => {
-  const [user, setUser] = useState(initialUser);
+  const [input, setInput] = useState({
+    identifier: "",
+    password: "",
+  });
+
   const navigate = useNavigate();
+  const auth = useAuth();
 
   const handleChange = ({ target }) => {
     const { name, value } = target;
-    setUser((currentUser) => ({
-      ...currentUser,
+    setInput((currentInput) => ({
+      ...currentInput,
       [name]: value,
     }));
   };
 
   const handleLogin = async (e) => {
-    e.preventDefault(); // Prevent the form's default submission
-    const url = `http://localhost:1337/api/auth/local`;
-    try {
-      if (user.identifier && user.password) {
-        const { data } = await axios.post(url, user);
-        if (data.jwt) {
-          storeUser(data);
-          toast.success("Logged in successfully!");
-          setUser(initialUser);
-          navigate("/");
-        }
+    e.preventDefault();
+    if (input.identifier && input.password) {
+      try {
+        await auth.loginAction(input);
+        navigate("/");
+      } catch (error) {
+        toast.error("Login failed. Please check your credentials.");
       }
-    } catch (error) {
-      toast.error("Invalid credentials!");
+    } else {
+      toast.warning("Please provide valid input.");
     }
   };
 
@@ -54,7 +52,7 @@ const LoginPage = () => {
                     id="identifier"
                     name="identifier"
                     type="email"
-                    value={user.identifier}
+                    value={input.identifier}
                     onChange={handleChange}
                     required
                     autoComplete="email"
@@ -85,7 +83,7 @@ const LoginPage = () => {
                     id="password"
                     name="password"
                     type="password"
-                    value={user.password}
+                    value={input.password}
                     onChange={handleChange}
                     required
                     className="block w-full rounded-md border-0 px-1.5 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"

@@ -1,14 +1,14 @@
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import { useNavigate } from "react-router-dom";
-import { userData } from "../../helpers";
+import { useAuth } from "../../hooks/AuthProvider";
 
 const Header = () => {
   const navigate = useNavigate();
 
-  const { username } = userData();
+  const auth = useAuth();
 
   const handleLogOut = () => {
-    localStorage.setItem("user", "");
+    auth.logOut();
     navigate("/login");
   };
 
@@ -23,7 +23,9 @@ const Header = () => {
               className="h-8 w-8 rounded-full"
             />
           </MenuButton>
-          <span className="text-md text-white">Welcome, {username}</span>
+          <span className="text-md text-white">
+            Welcome, {auth.user?.username}
+          </span>
         </div>
         <MenuItems
           transition

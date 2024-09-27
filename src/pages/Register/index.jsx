@@ -3,21 +3,25 @@ import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import axios from "axios";
 
-const initialUser = { email: "", password: "", username: "" };
+const initialUser = {
+  email: "",
+  password: "",
+  username: "",
+};
 
 const RegisterPage = () => {
-  const [user, setUser] = useState(initialUser);
+  const [input, setInput] = useState(initialUser);
   const navigate = useNavigate();
 
   const handleRegister = async (e) => {
-    e.preventDefault(); // Prevent default form submission
+    e.preventDefault();
     try {
       const url = `http://localhost:1337/api/auth/local/register`;
-      if (user.username && user.email && user.password) {
-        const response = await axios.post(url, user);
+      if (input.username && input.email && input.password) {
+        const response = await axios.post(url, input);
         if (response.status === 200) {
           toast.success("Registered successfully!");
-          setUser(initialUser);
+          setInput(initialUser); // Reset form inputs
           navigate("/login");
         }
       }
@@ -28,8 +32,8 @@ const RegisterPage = () => {
 
   const handleUserChange = ({ target }) => {
     const { name, value } = target;
-    setUser((currentUser) => ({
-      ...currentUser,
+    setInput((currentInput) => ({
+      ...currentInput,
       [name]: value,
     }));
   };
@@ -52,7 +56,7 @@ const RegisterPage = () => {
                     id="username"
                     name="username"
                     type="text"
-                    value={user.username}
+                    value={input.username}
                     onChange={handleUserChange}
                     required
                     className="block w-full rounded-md border-0 px-1.5 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"
@@ -72,9 +76,9 @@ const RegisterPage = () => {
                     id="email"
                     name="email"
                     type="email"
-                    required
-                    value={user.email}
+                    value={input.email}
                     onChange={handleUserChange}
+                    required
                     autoComplete="email"
                     className="block w-full rounded-md border-0 px-1.5 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"
                   />
@@ -82,20 +86,18 @@ const RegisterPage = () => {
               </div>
 
               <div>
-                <div>
-                  <label
-                    htmlFor="password"
-                    className="block text-sm font-medium leading-6 text-gray-900"
-                  >
-                    Password
-                  </label>
-                </div>
+                <label
+                  htmlFor="password"
+                  className="block text-sm font-medium leading-6 text-gray-900"
+                >
+                  Password
+                </label>
                 <div className="mt-2">
                   <input
                     id="password"
                     name="password"
                     type="password"
-                    value={user.password}
+                    value={input.password}
                     onChange={handleUserChange}
                     required
                     className="block w-full rounded-md border-0 px-1.5 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"

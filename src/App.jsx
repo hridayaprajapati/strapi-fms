@@ -16,17 +16,21 @@ import ProfilePage from "./pages/Profile";
 
 import Sidebar from "./components/Sidebar";
 import Header from "./components/Header";
-import { Protector } from "./helpers";
+
+import AuthProvider from "./hooks/AuthProvider";
+import PrivateRoute from "./router/route";
 
 function App() {
   const [showHeader, setShowHeader] = useState(window.innerWidth >= 640);
 
-  const handleResize = () => {
-    setShowHeader(window.innerWidth >= 640);
-  };
-
   useEffect(() => {
+    const handleResize = () => {
+      setShowHeader(window.innerWidth >= 640);
+    };
+
     window.addEventListener("resize", handleResize);
+
+    // Clean up event listener on component unmount
     return () => {
       window.removeEventListener("resize", handleResize);
     };
@@ -37,23 +41,30 @@ function App() {
       <div className="flex h-screen flex-col sm:flex-row">
         <Toaster expand={true} richColors position="top-center" />
         <BrowserRouter>
-          <Sidebar />
-          <div className="flex-1">
-            {showHeader && <Header />}
-            <Routes>
-              <Route path="/login" element={<LoginPage />} />
-              <Route path="/register" element={<RegisterPage />} />
-              <Route
-                path="/"
-                element={<Protector Component={DashboardPage} />}
-              />
-              <Route path="/profile" element={<ProfilePage />} />
-              <Route path="/change-password" element={<ChangePasswordPage />} />
-              <Route path="/family-info" element={<FamilyInformationPage />} />
-              <Route path="/family-info/new" element={<AddNewMember />} />
-              <Route path="/*" element={<PageNotFound />} />
-            </Routes>
-          </div>
+          <AuthProvider>
+            <Sidebar />
+            <div className="flex-1">
+              {showHeader && <Header />}
+              <Routes>
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/register" element={<RegisterPage />} />
+                <Route element={<PrivateRoute />}>
+                  <Route path="/" element={<DashboardPage />} />
+                  <Route path="/profile" element={<ProfilePage />} />
+                  <Route
+                    path="/change-password"
+                    element={<ChangePasswordPage />}
+                  />
+                  <Route
+                    path="/family-info"
+                    element={<FamilyInformationPage />}
+                  />
+                  <Route path="/family-info/new" element={<AddNewMember />} />
+                </Route>
+                <Route path="/*" element={<PageNotFound />} />
+              </Routes>
+            </div>
+          </AuthProvider>
         </BrowserRouter>
       </div>
     </>
