@@ -30,6 +30,8 @@ const MainContent = () => {
     };
   }, []);
 
+  const isAuthenticated = auth.user ? true : false;
+
   return (
     <>
       {auth.user && <Sidebar />}
@@ -45,7 +47,7 @@ const MainContent = () => {
             <Route path="/family-info" element={<FamilyInformationPage />} />
             <Route path="/family-info/new" element={<AddNewMember />} />
           </Route>
-          <Route path="*" element={<PageNotFound />} />
+          <Route path="*" element={<PageNotFound status={isAuthenticated} />} />
         </Routes>
       </div>
     </>
