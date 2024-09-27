@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import axios from "axios";
 import { useAuth } from "../../hooks/AuthProvider";
+import { API_URL } from "../../globalVariables";
 
 const initialUser = {
   email: "",
@@ -19,7 +20,7 @@ const RegisterPage = () => {
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      const url = `http://localhost:1337/api/auth/local/register`;
+      const url = `${API_URL}/auth/local/register`;
       if (input.username && input.email && input.password) {
         const response = await axios.post(url, input);
         if (response.status === 200) {

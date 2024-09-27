@@ -1,7 +1,10 @@
 import { useContext, createContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+
 import axios from "axios";
 import { toast } from "sonner";
+
+import { API_URL } from "../globalVariables";
 
 const AuthContext = createContext();
 
@@ -26,15 +29,11 @@ const AuthProvider = ({ children }) => {
 
   const loginAction = async (data) => {
     try {
-      const response = await axios.post(
-        "http://localhost:1337/api/auth/local",
-        data,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
+      const response = await axios.post(`${API_URL}/auth/local`, data, {
+        headers: {
+          "Content-Type": "application/json",
         },
-      );
+      });
 
       const res = response.data;
       if (res.user) {
@@ -42,6 +41,7 @@ const AuthProvider = ({ children }) => {
         setToken(res.jwt);
         localStorage.setItem("site", res.jwt);
         navigate("/");
+        toast.success("Login successful");
         return;
       }
       throw new Error(res.message || "Login failed");
