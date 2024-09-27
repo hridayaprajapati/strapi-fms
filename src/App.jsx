@@ -16,6 +16,7 @@ import ProfilePage from "./pages/Profile";
 
 import Sidebar from "./components/Sidebar";
 import Header from "./components/Header";
+import { Protector } from "./helpers";
 
 function App() {
   const [showHeader, setShowHeader] = useState(window.innerWidth >= 640);
@@ -42,13 +43,15 @@ function App() {
             <Routes>
               <Route path="/login" element={<LoginPage />} />
               <Route path="/register" element={<RegisterPage />} />
-              <Route path="/dashboard" element={<DashboardPage />} />
-              <Route path="/" element={<DashboardPage />} />
+              <Route
+                path="/"
+                element={<Protector Component={DashboardPage} />}
+              />
               <Route path="/profile" element={<ProfilePage />} />
               <Route path="/change-password" element={<ChangePasswordPage />} />
-              <Route path="family-info" element={<FamilyInformationPage />} />
-              <Route path="family-info/new" element={<AddNewMember />} />
-              <Route path="*" element={<PageNotFound />} />
+              <Route path="/family-info" element={<FamilyInformationPage />} />
+              <Route path="/family-info/new" element={<AddNewMember />} />
+              <Route path="/*" element={<PageNotFound />} />
             </Routes>
           </div>
         </BrowserRouter>

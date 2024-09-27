@@ -1,47 +1,45 @@
-"use client";
-
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import axios from "axios";
+
+const initialUser = { email: "", password: "", username: "" };
 
 const RegisterPage = () => {
+  const [user, setUser] = useState(initialUser);
   const navigate = useNavigate();
 
-  const register = async (event) => {
-    event.preventDefault();
-
-    const formData = new FormData(event.target);
-    const jsonData = Object.fromEntries(formData);
-
-    const reqOptions = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(jsonData),
-    };
-
-    const req = await fetch(
-      "http://127.0.0.1:1337/api/auth/local/register",
-      reqOptions,
-    );
-    const res = await req.json();
-
-    if (res.error) {
-      toast.error("Already used.");
-      return;
-    }
-
-    if (res.jwt && res.user) {
-      toast.success("Successful registration.");
-      return navigate("/login");
+  const handleRegister = async (e) => {
+    e.preventDefault(); // Prevent default form submission
+    try {
+      const url = `http://localhost:1337/api/auth/local/register`;
+      if (user.username && user.email && user.password) {
+        const response = await axios.post(url, user);
+        if (response.status === 200) {
+          toast.success("Registered successfully!");
+          setUser(initialUser);
+          navigate("/login");
+        }
+      }
+    } catch (error) {
+      toast.error(error.response?.data?.message || error.message);
     }
   };
+
+  const handleUserChange = ({ target }) => {
+    const { name, value } = target;
+    setUser((currentUser) => ({
+      ...currentUser,
+      [name]: value,
+    }));
+  };
+
   return (
     <>
       <main className="h-full">
         <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
           <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-            <form onSubmit={register} className="space-y-6">
+            <form className="space-y-6" onSubmit={handleRegister}>
               <div>
                 <label
                   htmlFor="username"
@@ -54,6 +52,8 @@ const RegisterPage = () => {
                     id="username"
                     name="username"
                     type="text"
+                    value={user.username}
+                    onChange={handleUserChange}
                     required
                     className="block w-full rounded-md border-0 px-1.5 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"
                   />
@@ -73,6 +73,8 @@ const RegisterPage = () => {
                     name="email"
                     type="email"
                     required
+                    value={user.email}
+                    onChange={handleUserChange}
                     autoComplete="email"
                     className="block w-full rounded-md border-0 px-1.5 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"
                   />
@@ -93,6 +95,8 @@ const RegisterPage = () => {
                     id="password"
                     name="password"
                     type="password"
+                    value={user.password}
+                    onChange={handleUserChange}
                     required
                     className="block w-full rounded-md border-0 px-1.5 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"
                   />
