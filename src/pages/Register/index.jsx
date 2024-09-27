@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import axios from "axios";
+import { useAuth } from "../../hooks/AuthProvider";
 
 const initialUser = {
   email: "",
@@ -12,6 +13,8 @@ const initialUser = {
 const RegisterPage = () => {
   const [input, setInput] = useState(initialUser);
   const navigate = useNavigate();
+
+  const auth = useAuth();
 
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -37,6 +40,12 @@ const RegisterPage = () => {
       [name]: value,
     }));
   };
+
+  useEffect(() => {
+    if (auth.user) {
+      navigate("/");
+    }
+  }, [auth.user, navigate]);
 
   return (
     <>

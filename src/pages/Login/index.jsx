@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { useAuth } from "../../hooks/AuthProvider";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const LoginPage = () => {
   const [input, setInput] = useState({
@@ -33,6 +33,12 @@ const LoginPage = () => {
       toast.warning("Please provide valid input.");
     }
   };
+
+  useEffect(() => {
+    if (auth.user) {
+      navigate("/");
+    }
+  }, [auth.user, navigate]);
 
   return (
     <>
