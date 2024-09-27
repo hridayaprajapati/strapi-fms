@@ -1,4 +1,7 @@
+import { useAuth } from "../../hooks/AuthProvider";
+
 const ProfilePage = () => {
+  const auth = useAuth();
   return (
     <>
       <main className="p-6">
@@ -18,7 +21,7 @@ const ProfilePage = () => {
                   Name
                 </dt>
                 <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                  HariKrishna
+                  {auth.user.username}
                 </dd>
               </div>
               <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
@@ -26,7 +29,7 @@ const ProfilePage = () => {
                   Username
                 </dt>
                 <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                  username123
+                  {auth.user.username}
                 </dd>
               </div>
               <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
@@ -34,7 +37,7 @@ const ProfilePage = () => {
                   Email
                 </dt>
                 <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                  margotfoster@example.com
+                  {auth.user.email}
                 </dd>
               </div>
             </dl>
