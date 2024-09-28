@@ -2,6 +2,7 @@ import { useAuth } from "../../hooks/AuthProvider";
 
 const DashboardPage = () => {
   const auth = useAuth();
+  // console.log(auth);
   const familyCount = 5;
 
   return (

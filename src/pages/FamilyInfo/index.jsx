@@ -1,7 +1,38 @@
 import { ChevronUpDownIcon } from "@heroicons/react/24/solid";
+import axios from "axios";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { useAuth } from "../../hooks/AuthProvider";
+import { API_URL } from "../../globalVariables";
 
 const FamilyInformationPage = () => {
+  const [listMembers, setListMembers] = useState([]);
+  const auth = useAuth();
+
+  const getListMembers = async () => {
+    let config = {
+      method: "get",
+      maxBodyLength: Infinity,
+      url: `${API_URL}/family-infos`,
+      headers: {
+        Authorization: `${auth.jwt}`,
+      },
+    };
+
+    axios
+      .request(config)
+      .then((response) => {
+        setListMembers(response.data.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  useEffect(() => {
+    getListMembers();
+  }, []);
+
   return (
     <>
       <main className="m-4 flex flex-col items-center">
@@ -59,84 +90,38 @@ const FamilyInformationPage = () => {
               </tr>
             </thead>
             <tbody>
-              <tr className="border-b bg-white">
-                <td className="px-6 py-4">1</td>
-                <th
-                  scope="row"
-                  className="whitespace-nowrap px-6 py-4 font-medium text-gray-900"
-                >
-                  Ram
-                </th>
-                <td className="px-6 py-4">Son</td>
-                <td className="px-6 py-4">11</td>
-                <td className="px-6 py-4">Male</td>
-                <td className="flex flex-row gap-4 px-6 py-4">
-                  <Link
-                    to="#"
-                    className="font-medium text-blue-600 hover:underline"
-                  >
-                    Edit
-                  </Link>
-                  <Link
-                    to="#"
-                    className="font-medium text-red-600 hover:underline"
-                  >
-                    Delete
-                  </Link>
-                </td>
-              </tr>
-              <tr className="border-b bg-white">
-                <td className="px-6 py-4">2</td>
-                <th
-                  scope="row"
-                  className="whitespace-nowrap px-6 py-4 font-medium text-gray-900"
-                >
-                  Shyam
-                </th>
-                <td className="px-6 py-4">Son</td>
-                <td className="px-6 py-4">18</td>
-                <td className="px-6 py-4">Male</td>
-                <td className="flex flex-row gap-4 px-6 py-4">
-                  <Link
-                    to="#"
-                    className="font-medium text-blue-600 hover:underline"
-                  >
-                    Edit
-                  </Link>
-                  <Link
-                    to="#"
-                    className="font-medium text-red-600 hover:underline"
-                  >
-                    Delete
-                  </Link>
-                </td>
-              </tr>
-              <tr className="bg-white">
-                <td className="px-6 py-4">3</td>
-                <th
-                  scope="row"
-                  className="whitespace-nowrap px-6 py-4 font-medium text-gray-900"
-                >
-                  Geeta
-                </th>
-                <td className="px-6 py-4">Daughter</td>
-                <td className="px-6 py-4">20</td>
-                <td className="px-6 py-4">Female</td>
-                <td className="flex flex-row gap-4 px-6 py-4">
-                  <Link
-                    to="#"
-                    className="font-medium text-blue-600 hover:underline"
-                  >
-                    Edit
-                  </Link>
-                  <Link
-                    to="#"
-                    className="font-medium text-red-600 hover:underline"
-                  >
-                    Delete
-                  </Link>
-                </td>
-              </tr>
+              {listMembers.map((item, idx) => {
+                return (
+                  <tr key={idx} className="border-b bg-white">
+                    <td className="px-6 py-4">{item.id}</td>
+                    <th
+                      scope="row"
+                      className="whitespace-nowrap px-6 py-4 font-medium text-gray-900"
+                    >
+                      {item.familyMemberName}
+                    </th>
+                    <td className="px-6 py-4">{item.familyMemberRelation}</td>
+                    <td className="px-6 py-4">{item.familyMemberAge}</td>
+                    <td className="px-6 py-4 capitalize">
+                      {item.familyMemberGender}
+                    </td>
+                    <td className="flex flex-row gap-4 px-6 py-4">
+                      <Link
+                        to="#"
+                        className="font-medium text-blue-600 hover:underline"
+                      >
+                        Edit
+                      </Link>
+                      <Link
+                        to="#"
+                        className="font-medium text-red-600 hover:underline"
+                      >
+                        Delete
+                      </Link>
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>

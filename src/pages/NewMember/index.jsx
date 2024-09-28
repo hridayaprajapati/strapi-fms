@@ -5,11 +5,7 @@ const AddNewMember = () => {
         <h2 className="text-lg font-bold leading-7 text-gray-900">
           Add family member
         </h2>
-        <form
-          action="#"
-          method="POST"
-          className="mt-6 flex flex-col rounded-md border p-4 shadow-md sm:gap-y-6 sm:p-6"
-        >
+        <form className="mt-6 flex flex-col rounded-md border p-4 shadow-md sm:gap-y-6 sm:p-6">
           <div className="mt-2 flex flex-col sm:flex-row sm:items-center sm:gap-x-10">
             <div className="flex flex-col gap-y-2 sm:w-1/2">
               <label
