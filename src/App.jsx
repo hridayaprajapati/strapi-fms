@@ -10,8 +10,8 @@ import MainContent from "./MainContent";
 function App() {
   return (
     <>
+      <Toaster expand={true} richColors position="top-center" />
       <div className="flex h-screen flex-col sm:flex-row">
-        <Toaster expand={true} richColors position="top-center" />
         <BrowserRouter>
           <AuthProvider>
             <MainContent />
