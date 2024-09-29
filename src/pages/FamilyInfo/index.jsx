@@ -124,7 +124,7 @@ const FamilyInformationPage = () => {
                     </td>
                     <td className="flex flex-row gap-4 px-6 py-4">
                       <Link
-                        to="#"
+                        to={`/family-info/${item.documentId}/edit`}
                         className="font-medium text-blue-600 hover:underline"
                       >
                         Edit

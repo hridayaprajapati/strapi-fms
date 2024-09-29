@@ -6,15 +6,16 @@ import DashboardPage from "./pages/Dashboard";
 import PageNotFound from "./pages/PageNotFound";
 import RegisterPage from "./pages/Register";
 import FamilyInformationPage from "./pages/FamilyInfo";
-import ChangePasswordPage from "./pages/ChangePassword";
 import AddNewMember from "./pages/NewMember";
+import EditMemberInfo from "./pages/EditMemberInfo";
+import ChangePasswordPage from "./pages/ChangePassword";
 import ProfilePage from "./pages/Profile";
 
 import Sidebar from "./components/Sidebar";
-
-import PrivateRoute from "./router/route";
-import { useAuth } from "./hooks/AuthProvider";
 import Header from "./components/Header";
+
+import PrivateRoute from "./router/PrivateRoute";
+import { useAuth } from "./hooks/AuthProvider";
 
 const MainContent = () => {
   const auth = useAuth();
@@ -46,6 +47,7 @@ const MainContent = () => {
             <Route path="/change-password" element={<ChangePasswordPage />} />
             <Route path="/family-info" element={<FamilyInformationPage />} />
             <Route path="/family-info/new" element={<AddNewMember />} />
+            <Route path="/family-info/:id/edit" element={<EditMemberInfo />} />
           </Route>
           <Route path="*" element={<PageNotFound status={isAuthenticated} />} />
         </Routes>
