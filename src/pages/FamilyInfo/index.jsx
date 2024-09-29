@@ -33,6 +33,23 @@ const FamilyInformationPage = () => {
     getListMembers();
   }, []);
 
+  const deleteMember = (documentId) => {
+    let config = {
+      method: "delete",
+      maxBodyLength: Infinity,
+      url: `${API_URL}/family-infos/${documentId}`,
+    };
+
+    axios
+      .request(config)
+      .then(() => {
+        getListMembers();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   return (
     <>
       <main className="m-4 flex flex-col items-center">
@@ -93,7 +110,7 @@ const FamilyInformationPage = () => {
               {listMembers.map((item, idx) => {
                 return (
                   <tr key={idx} className="border-b bg-white">
-                    <td className="px-6 py-4">{item.id}</td>
+                    <td className="px-6 py-4">{idx + 1}</td>
                     <th
                       scope="row"
                       className="whitespace-nowrap px-6 py-4 font-medium text-gray-900"
@@ -114,6 +131,7 @@ const FamilyInformationPage = () => {
                       </Link>
                       <Link
                         to="#"
+                        onClick={() => deleteMember(item.documentId)}
                         className="font-medium text-red-600 hover:underline"
                       >
                         Delete
