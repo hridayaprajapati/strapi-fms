@@ -28,7 +28,7 @@ const ChangePasswordPage = () => {
   };
 
   const cancelChangePassword = () => {
-    return navigate("/dashboard");
+    return navigate("/");
   };
 
   const changePasswordHandle = async (e) => {

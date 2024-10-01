@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../hooks/AuthProvider";
 import { API_URL } from "../../globalVariables";
+import { toast } from "sonner";
 
 const FamilyInformationPage = () => {
   const [listMembers, setListMembers] = useState([]);
@@ -43,6 +44,7 @@ const FamilyInformationPage = () => {
     axios
       .request(config)
       .then(() => {
+        toast.error("Member deleted successfully");
         getListMembers();
       })
       .catch((error) => {
@@ -54,7 +56,7 @@ const FamilyInformationPage = () => {
     <>
       <main className="m-4 flex flex-col items-center">
         <div className="container mb-4 flex flex-row items-center justify-between">
-          <h1 className="text-bold text-base">Family Members</h1>
+          <h1 className="text-base font-bold">Family Members</h1>
           <Link
             to="/family-info/new"
             className="flex flex-row items-center gap-2 rounded-lg bg-blue-600 p-2 text-base text-white"
