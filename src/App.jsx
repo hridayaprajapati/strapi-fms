@@ -1,5 +1,4 @@
 import { BrowserRouter } from "react-router-dom";
-
 import { Toaster } from "sonner";
 
 import "./App.css";
@@ -11,7 +10,7 @@ function App() {
   return (
     <>
       <Toaster expand={true} richColors position="top-center" />
-      <div className="flex h-screen flex-col sm:flex-row">
+      <div className="flex min-h-screen flex-col">
         <BrowserRouter>
           <AuthProvider>
             <MainContent />
