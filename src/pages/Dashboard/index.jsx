@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 
 const DashboardPage = () => {
   const auth = useAuth();
+
   const [familyCount, setFamilyCount] = useState(0);
   const [error, setError] = useState(null);
 
@@ -12,7 +13,7 @@ const DashboardPage = () => {
     try {
       const response = await axios.get(`${API_URL}/family-infos`, {
         headers: {
-          Authorization: `${auth.jwt}`,
+          Authorization: `${auth.token}`,
         },
       });
       setFamilyCount(response.data.data.length);

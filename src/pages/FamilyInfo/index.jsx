@@ -15,7 +15,7 @@ const FamilyInformationPage = () => {
       maxBodyLength: Infinity,
       url: `${API_URL}/family-infos`,
       headers: {
-        Authorization: `${auth.jwt}`,
+        Authorization: `${auth.token}`,
       },
     };
 
