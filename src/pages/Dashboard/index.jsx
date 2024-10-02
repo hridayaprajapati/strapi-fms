@@ -13,7 +13,7 @@ const DashboardPage = () => {
     try {
       const response = await axios.get(`${API_URL}/family-infos`, {
         headers: {
-          Authorization: `${auth.token}`,
+          Authorization: `Bearer ${auth.token}`,
         },
       });
       setFamilyCount(response.data.data.length);

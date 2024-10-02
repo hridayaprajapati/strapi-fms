@@ -64,6 +64,9 @@ const FamilyInformationPage = () => {
       method: "delete",
       maxBodyLength: Infinity,
       url: `${API_URL}/family-infos/${documentId}`,
+      headers: {
+        Authorization: `Bearer ${auth.token}`,
+      },
     };
 
     axios

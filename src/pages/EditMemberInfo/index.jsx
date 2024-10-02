@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { API_URL } from "../../globalVariables";
 import { toast } from "sonner";
+import { useAuth } from "../../hooks/AuthProvider";
 
 const EditMemberInfo = () => {
   const [formData, setFormData] = useState({
@@ -13,12 +14,17 @@ const EditMemberInfo = () => {
   });
 
   const { id } = useParams();
+  const auth = useAuth();
 
   const getMemberInfo = (documentId) => {
     let config = {
       method: "get",
       maxBodyLength: Infinity,
       url: `${API_URL}/family-infos/${documentId}`,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${auth.token}`,
+      },
     };
 
     axios
