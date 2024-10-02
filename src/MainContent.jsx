@@ -50,7 +50,7 @@ const MainContent = () => {
               <Route path="/family-info" element={<FamilyInformationPage />} />
               <Route path="/family-info/new" element={<AddNewMember />} />
               <Route
-                path="/family-info/:id/edit"
+                path="/family-info/:documentId/edit"
                 element={<EditMemberInfo />}
               />
             </Route>

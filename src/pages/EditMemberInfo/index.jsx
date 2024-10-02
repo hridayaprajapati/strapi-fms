@@ -13,7 +13,7 @@ const EditMemberInfo = () => {
     familyMemberGender: "",
   });
 
-  const { id } = useParams();
+  const { documentId } = useParams();
   const auth = useAuth();
 
   const getMemberInfo = (documentId) => {
@@ -44,8 +44,8 @@ const EditMemberInfo = () => {
   };
 
   useEffect(() => {
-    getMemberInfo(id);
-  }, [id]);
+    getMemberInfo(documentId);
+  }, []);
 
   const handleChange = (e) => {
     setFormData({
@@ -70,7 +70,7 @@ const EditMemberInfo = () => {
     let config = {
       method: "put",
       maxBodyLength: Infinity,
-      url: `${API_URL}/family-infos/${id}`,
+      url: `${API_URL}/family-infos/${documentId}`,
       headers: {
         "Content-Type": "application/json",
       },
