@@ -209,16 +209,24 @@ const FamilyInformationPage = () => {
                 onClick={handlePrevious}
                 className={`${
                   currentPage === 1 ? "cursor-not-allowed opacity-50" : ""
-                } h-8 items-center justify-center rounded-s-lg border border-gray-300 px-3 hover:bg-gray-100`}
+                } h-8 items-center justify-center rounded-l-lg border border-gray-300 px-3 transition duration-200 hover:bg-gray-100`}
                 disabled={currentPage === 1}
+                aria-label="Previous Page"
               >
                 Previous
               </button>
             </li>
+
             <li>
               <button
                 onClick={handleNext}
-                className="h-8 items-center justify-center rounded-e-lg border border-gray-300 px-3 hover:bg-gray-100"
+                className={`${
+                  currentPage === Math.ceil(totalItems / pageSize) // suppose 20 / 10 = 2, 20 is total pages, 10 is pagination size
+                    ? "cursor-not-allowed opacity-50"
+                    : ""
+                } h-8 items-center justify-center rounded-r-lg border border-gray-300 px-3 transition duration-200 hover:bg-gray-100`}
+                disabled={currentPage === Math.ceil(totalItems / pageSize)}
+                aria-label="Next Page"
               >
                 Next
               </button>
