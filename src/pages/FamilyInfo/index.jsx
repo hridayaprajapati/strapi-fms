@@ -8,15 +8,39 @@ import { toast } from "sonner";
 
 const FamilyInformationPage = () => {
   const [listMembers, setListMembers] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalItems, setTotalItems] = useState(0);
+  const pageSize = 10;
+
   const auth = useAuth();
 
-  const getListMembers = async () => {
+  const getTotalItems = async () => {
     let config = {
       method: "get",
       maxBodyLength: Infinity,
       url: `${API_URL}/family-infos`,
       headers: {
-        Authorization: `${auth.token}`,
+        Authorization: `Bearer ${auth.token}`,
+      },
+    };
+
+    axios
+      .request(config)
+      .then((response) => {
+        setTotalItems(response.data.meta.pagination.total);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const getListMembers = async (page = currentPage) => {
+    let config = {
+      method: "get",
+      maxBodyLength: Infinity,
+      url: `${API_URL}/family-infos?pagination[page]=${page}&pagination[pageSize]=${pageSize}`,
+      headers: {
+        Authorization: `Bearer ${auth.token}`,
       },
     };
 
@@ -32,6 +56,7 @@ const FamilyInformationPage = () => {
 
   useEffect(() => {
     getListMembers();
+    getTotalItems();
   }, []);
 
   const deleteMember = (documentId) => {
@@ -52,6 +77,18 @@ const FamilyInformationPage = () => {
       });
   };
 
+  const handlePrevious = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+      getListMembers(currentPage - 1);
+    }
+  };
+
+  const handleNext = () => {
+    setCurrentPage(currentPage + 1);
+    getListMembers(currentPage + 1);
+  };
+
   return (
     <>
       <main className="m-4 flex flex-col items-center">
@@ -65,7 +102,7 @@ const FamilyInformationPage = () => {
           </Link>
         </div>
         <div className="container relative overflow-x-auto shadow-md sm:rounded-lg">
-          <table className="w-full text-left text-sm text-gray-500">
+          <table className="max-h-[570px] w-full text-left text-sm text-gray-500">
             <thead className="bg-gray-50 text-xs uppercase text-gray-700">
               <tr>
                 <th scope="col" className="px-6 py-3">
@@ -112,7 +149,9 @@ const FamilyInformationPage = () => {
               {listMembers.map((item, idx) => {
                 return (
                   <tr key={idx} className="border-b bg-white">
-                    <td className="px-6 py-4">{idx + 1}</td>
+                    <td className="px-6 py-4">
+                      {(currentPage - 1) * pageSize + (idx + 1)}
+                    </td>
                     <th
                       scope="row"
                       className="whitespace-nowrap px-6 py-4 font-medium text-gray-900"
@@ -145,6 +184,44 @@ const FamilyInformationPage = () => {
             </tbody>
           </table>
         </div>
+        <nav className="container flex w-full items-center justify-between pt-4">
+          <span className="mb-4 flex justify-between text-sm font-normal text-gray-500">
+            Showing{" "}
+            <span className="mx-1 font-semibold text-gray-900">
+              {(currentPage - 1) * pageSize + 1}
+            </span>
+            -
+            <span className="mx-1 font-semibold text-gray-900">
+              {totalItems}
+            </span>{" "}
+            of
+            <span className="mx-1 font-semibold text-gray-900">
+              {totalItems}
+            </span>
+          </span>
+
+          <ul className="inline-flex h-8 -space-x-px bg-white text-sm text-gray-500">
+            <li>
+              <button
+                onClick={handlePrevious}
+                className={`${
+                  currentPage === 1 ? "cursor-not-allowed opacity-50" : ""
+                } h-8 items-center justify-center rounded-s-lg border border-gray-300 px-3 hover:bg-gray-100`}
+                disabled={currentPage === 1}
+              >
+                Previous
+              </button>
+            </li>
+            <li>
+              <button
+                onClick={handleNext}
+                className="h-8 items-center justify-center rounded-e-lg border border-gray-300 px-3 hover:bg-gray-100"
+              >
+                Next
+              </button>
+            </li>
+          </ul>
+        </nav>
       </main>
     </>
   );
