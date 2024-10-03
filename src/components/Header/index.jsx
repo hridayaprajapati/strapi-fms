@@ -1,46 +1,46 @@
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
-import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/AuthProvider";
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
-  const navigate = useNavigate();
-
   const auth = useAuth();
-
+  const navigate = useNavigate();
   const handleLogOut = () => {
-    auth.logOut();
+    auth.signOut();
     navigate("/login");
   };
 
+  console.log(auth);
+
   return (
     <>
-      <Menu as="div" className="relative bg-slate-800 p-3">
-        <div className="flex items-center justify-end gap-2">
-          <MenuButton className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
-            <img
-              alt=""
-              src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-              className="h-8 w-8 rounded-full"
-            />
-          </MenuButton>
-          <span className="text-md text-white">
-            Welcome, {auth.user?.username}
-          </span>
+      <nav className="flex justify-between bg-slate-900 px-3 py-2">
+        <img src="#!" alt="Logo" />
+        <div>
+          <Menu as="div" className="relative">
+            <MenuButton className="flex items-center space-x-2">
+              <img
+                src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                alt="Avatar"
+                className="h-8 w-8 rounded-full"
+              />
+              <span className="text-white">Welcome, {auth.user.fullname}</span>
+            </MenuButton>
+            <MenuItems className="absolute mt-2 w-fit rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+              <div className="p-1">
+                <MenuItem>
+                  <button
+                    onClick={handleLogOut}
+                    className="flex items-center rounded-md px-2 py-2 text-sm text-gray-900 hover:bg-gray-100"
+                  >
+                    Log out
+                  </button>
+                </MenuItem>
+              </div>
+            </MenuItems>
+          </Menu>
         </div>
-        <MenuItems
-          transition
-          className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
-        >
-          <MenuItem>
-            <button
-              onClick={handleLogOut}
-              className="block w-full px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100"
-            >
-              Sign out
-            </button>
-          </MenuItem>
-        </MenuItems>
-      </Menu>
+      </nav>
     </>
   );
 };
