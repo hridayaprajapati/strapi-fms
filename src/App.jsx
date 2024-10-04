@@ -10,13 +10,11 @@ function App() {
   return (
     <>
       <Toaster expand={true} richColors position="top-center" />
-      <div className="flex min-h-screen flex-col">
         <BrowserRouter>
           <AuthProvider>
             <MainContent />
           </AuthProvider>
         </BrowserRouter>
-      </div>
     </>
   );
 }

@@ -4,15 +4,19 @@ const ProfilePage = () => {
   const auth = useAuth();
   return (
     <>
-      <main className="p-6">
-        <div className="px-4 sm:px-0">
+      <main className="mt-5 p-6">
+        <div className="mb-5 px-4 sm:px-0">
           <h3 className="text-xl font-bold leading-7 text-gray-900">
             User Information
           </h3>
         </div>
-        <div className="user-info flex flex-col items-center justify-around sm:flex-row">
+        <div className="user-info flex flex-col items-center justify-around gap-4 sm:flex-row">
           <div className="user-image">
-            <img src="#" alt="user-image" className="h-16 w-16 rounded-full" />
+            <img
+              src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+              alt="user-image"
+              className="rounded-full"
+            />
           </div>
           <div>
             <dl className="divide-y divide-gray-100">

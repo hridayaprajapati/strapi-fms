@@ -75,14 +75,14 @@ const LoginPage = () => {
                   >
                     Password
                   </label>
-                  <div className="text-sm">
+                  {/* <div className="text-sm">
                     <Link
                       to="/forgot-password"
                       className="font-semibold text-blue-600 hover:text-blue-500"
                     >
-                      {/* Forgot password? */}
+                      Forgot password?
                     </Link>
-                  </div>
+                  </div> */}
                 </div>
                 <div className="mt-2">
                   <input

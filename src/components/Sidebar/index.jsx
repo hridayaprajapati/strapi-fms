@@ -13,7 +13,7 @@ const Sidebar = () => {
             </li>
             <li>
               <Link
-                to="/change-password"
+                to="/profile"
                 className="block rounded p-2 hover:bg-gray-700"
               >
                 Profile

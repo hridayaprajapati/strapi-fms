@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { API_URL } from "../../globalVariables";
 import { toast } from "sonner";
+import { useAuth } from "../../hooks/AuthProvider";
 
 const AddNewMember = () => {
   const [formData, setFormData] = useState({
@@ -21,6 +22,8 @@ const AddNewMember = () => {
 
   const navigate = useNavigate();
 
+  const auth = useAuth();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     let data = JSON.stringify({
@@ -38,6 +41,7 @@ const AddNewMember = () => {
       url: `${API_URL}/family-infos`,
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${auth.token}`,
       },
       data: data,
     };

@@ -29,12 +29,13 @@ const MainContent = () => {
 
         <div className="flex flex-1">
           {auth.user && <Sidebar />}
-
-          <div className="flex flex-1 flex-col">
-            <main className="flex-1 overflow-auto">
+          <main className="flex flex-1 flex-col">
+            <div className="flex-1">
               <Routes>
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/register" element={<RegisterPage />} />
+
+                {/* Protected Routes */}
                 <Route element={<PrivateRoute />}>
                   <Route path="/" element={<DashboardPage />} />
                   <Route path="/profile" element={<ProfilePage />} />
@@ -52,16 +53,15 @@ const MainContent = () => {
                     element={<EditMemberInfo />}
                   />
                 </Route>
+
                 <Route
                   path="*"
                   element={<PageNotFound status={isAuthenticated} />}
                 />
               </Routes>
-            </main>
-
-            {/* Footer aligned at the bottom of the page */}
+            </div>
             <Footer />
-          </div>
+          </main>
         </div>
       </div>
     </>

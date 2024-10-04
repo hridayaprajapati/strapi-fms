@@ -59,6 +59,7 @@ const ChangePasswordPage = () => {
         handleLogOut();
       })
       .catch((error) => {
+        toast.error(error.message);
         console.log(error);
       });
   };
